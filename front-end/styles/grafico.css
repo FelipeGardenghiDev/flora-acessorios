@@ -1,0 +1,49 @@
+/* vai pro grafico.css */
+.grafico-box {
+    width: 100%; 
+    max-width: 100%; 
+    height: 350px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+canvas#vendasChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.detalhes-mes-container {
+    width: 100%;
+    max-width: none;
+    padding: 40px;
+    background: var(--cor-form);
+    box-sizing: border-box;
+}
+.cards-vendas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.venda-card {
+    background: var(--cor-secundaria);
+    border-left: 5px solid var(--cor-primaria);
+    padding: 15px;
+    flex: 1 1 calc(50% - 15px);
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.05);
+    font-family: var(--font-texto);
+    font-size: 14px;
+    color: var(--cor-texto);
+    box-sizing: border-box;
+}
+
+.venda-card span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.venda-card strong {
+    color: var(--cor-borda);
+    font-weight: 600;
+}

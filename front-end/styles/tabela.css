@@ -1,0 +1,39 @@
+/* vai pra tabela.css */
+.tabela-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: var(--cor-form);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.tabela-dados {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-texto);
+    text-align: left;
+}
+
+.tabela-dados th {
+    background-color: var(--cor-primaria);
+    color: var(--cor-secundaria);
+    padding: 12px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.tabela-dados td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(206, 197, 185, 0.3);
+    color: var(--cor-texto);
+    font-size: 15px;
+}
+
+.tabela-dados tbody tr:hover {
+    background-color: rgba(158, 143, 125, 0.1);
+    transition: 0.2s;
+}

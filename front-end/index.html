@@ -1,0 +1,73 @@
+<!-- comentário em HTML, não será exibido na página -->
+
+<!DOCTYPE html><!-- o documento é feito na linguagem de marcação HTML) -->
+<html lang="pt-br"> <!-- o idioma utilizado na página será português brasileiro -->
+
+    <head><!-- head parte que não será exibida na página -->
+        <meta charset="UTF-8"> <!-- exibe todos os assentos, pontuações e carácteres especiais -->
+        <meta http-equiv="X-UA-Compatible" content="=IE-Edge"> <!-- utilize a versão mais recente do Edge -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- exibe a página nas escalas dos dispositivos abertos (desktop ou mobile) -->
+        <link rel="stylesheet" href="./styles/style.css"><!-- utiliza a linguagem de estilização CSS para a página -->
+        <link rel="stylesheet" href="./styles/grafico.css"><!-- utiliza a linguagem de estilização CSS para a página -->
+        <link rel="stylesheet" href="./styles/vendas_recentes.css"><!-- utiliza a linguagem de estilização CSS para a página -->
+
+        <title>Home</title><!-- título da página -->
+    </head>
+    
+    <body><!-- body parte que será exibida na página -->
+
+        <header class="cabecalho"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
+            <h1 class="titulo">Flora</h1>
+            <h2 class="subtitulo">Acessórios</h2>
+            <div class="divider"></div>
+        </header>
+                    
+        <nav class="menu_lateral"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
+            <nav class="menu"><!-- menu de navegação -->
+                <a class="dashboard" href="./index.html"></a>
+                <a class="vendas" href="./cadastro_de_vendas.html"></a>
+                <a class="vendedores" href="./vendedores.html"></a>
+                <a class="produtos" href="./produtos.html"></a>
+            </nav>
+        </nav>
+
+        <main class="container">
+            
+            <div class="dashboard-layout">
+                <section class="grafico-container">
+                    <h3 class="titulo_pagina">Dashboard de Vendas</h3>
+                    <div class="grafico-box">
+                        <canvas id="vendasChart"></canvas>
+                    </div>
+                    
+                    <div id="detalhes-mes" class="detalhes-mes-container" style="display: none;">
+                        <h3 id="titulo-detalhes-mes" class="titulo_pagina" style="margin-bottom: 20px;">Detalhamento de vendas</h3>
+                        <div id="cards-vendas" class="cards-vendas-grid">
+                            </div>
+                    </div>
+                </section>
+        
+                <aside class="recent-sales">
+                    <div class="sales-header">
+                        <h2 class="subtitulo">Vendas recentes</h2>
+                        <button id="btn-atualizar" class="history-icon" title="Atualizar vendas recentes">↺</button>
+                    </div>
+        
+                    <div class="sales-list">
+                        
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <div class="divider_bottom" role="separator" aria-hidden="true"></div>
+
+        <footer class="rodape">
+            <p>Projeto Integrador - UNIVESP</p>
+            <p>PJI310 - A2026S1N2 - Grupo 9</p>
+        </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./scripts/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/tabela.css"><!-- utiliza a linguagem de estilização CSS para a página -->
+        <title>Produtos</title>
+    </head>
+
+    <body>
+        <header class="cabecalho">
+            <h1 class="titulo">Flora</h1>
+            <h2 class="subtitulo">Acessórios</h2>
+            <div class="divider"></div>
+        </header>
+                    
+        <nav class="menu_lateral"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
+            <nav class="menu"><!-- menu de navegação -->
+                <a class="dashboard" href="./index.html"></a>
+                <a class="vendas" href="./cadastro_de_vendas.html"></a>
+                <a class="vendedores" href="./vendedores.html"></a>
+                <a class="produtos" href="./produtos.html"></a>
+            </nav>
+        </nav>
+
+        <main class="container">
+            <h3 class="titulo_pagina">Catálogo de Produtos</h3>
+            
+            <div class="tabela-container">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">Categoria</th>
+                            <th style="text-align: center;">Código</th>
+                            <th style="text-align: center;">Nome</th>
+                            <th style="text-align: center;">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaProdutos">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <div class="divider_bottom" role="separator" aria-hidden="true"></div>
+
+        <footer class="rodape">
+            <p>Projeto Integrador - UNIVESP</p>
+            <p>PJI310 - A2026S1N2 - Grupo 9</p>
+        </footer>
+    
+    <script type="module" src="./scripts/tables.js"></script>
+</body>
+</html>
