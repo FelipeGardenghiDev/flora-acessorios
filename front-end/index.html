@@ -22,12 +22,12 @@
             <div class="divider"></div>
         </header>
                     
-        <nav class="menu_lateral"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
-            <nav class="menu"><!-- menu de navegação -->
-                <a class="dashboard" href="./index.html"></a>
-                <a class="vendas" href="./cadastro_de_vendas.html"></a>
-                <a class="vendedores" href="./vendedores.html"></a>
-                <a class="produtos" href="./produtos.html"></a>
+        <nav class="menu_lateral" aria-label="Menu Principal">
+            <nav class="menu">
+                <a class="dashboard" href="./index.html" aria-label="Ir para a Dashboard"></a>
+                <a class="vendas" href="./cadastro_de_vendas.html" aria-label="Registrar nova venda"></a>
+                <a class="vendedores" href="./vendedores.html" aria-label="Ver lista de vendedores"></a>
+                <a class="produtos" href="./produtos.html" aria-label="Ver catálogo de produtos"></a>
             </nav>
         </nav>
 
@@ -37,7 +37,7 @@
                 <section class="grafico-container">
                     <h3 class="titulo_pagina">Dashboard de Vendas</h3>
                     <div class="grafico-box">
-                        <canvas id="vendasChart"></canvas>
+                        <canvas id="vendasChart" role="img" aria-label="Gráfico de vendas mensais. Os detalhes podem ser vistos na seção de detalhamento abaixo."></canvas>
                     </div>
                     
                     <div id="detalhes-mes" class="detalhes-mes-container" style="display: none;">
