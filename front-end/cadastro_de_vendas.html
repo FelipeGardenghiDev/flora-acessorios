@@ -19,12 +19,12 @@
             <div class="divider"></div>
         </header>
                     
-        <nav class="menu_lateral"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
+        <nav class="menu_lateral" aria-label="Menu Principal"><!-- parte de cima da página, geralmente o navegador/menu/banner -->
             <nav class="menu"><!-- menu de navegação -->
-                <a class="dashboard" href="./index.html"></a>
-                <a class="vendas" href="./cadastro_de_vendas.html"></a>
-                <a class="vendedores" href="./vendedores.html"></a>
-                <a class="produtos" href="./produtos.html"></a>
+                <a class="dashboard" href="./index.html" aria-label="Ir para a Dashboard"></a>
+                <a class="vendas" href="./cadastro_de_vendas.html" aria-label="Registrar nova venda"></a>
+                <a class="vendedores" href="./vendedores.html" aria-label="Ver lista de vendedores"></a>
+                <a class="produtos" href="./produtos.html" aria-label="Ver catálogo de produtos"></a>
             </nav>
         </nav>
 
@@ -44,18 +44,10 @@
                 
                 <select id="mesVenda" required>
                     <option value="" disabled selected>Selecione o Mês da Venda</option>
-                    <option value="JAN">Janeiro</option>
-                    <option value="FEV">Fevereiro</option>
-                    <option value="MAR">Março</option>
-                    <option value="ABR">Abril</option>
-                    <option value="MAI">Maio</option>
-                    <option value="JUN">Junho</option>
-                    <option value="JUL">Julho</option>
-                    <option value="AGO">Agosto</option>
-                    <option value="SET">Setembro</option>
-                    <option value="OUT">Outubro</option>
-                    <option value="NOV">Novembro</option>
-                    <option value="DEZ">Dezembro</option>
+                </select>
+
+                <select id="anoVenda" required>
+                    <option value="" disabled selected>Selecione o Ano da Venda</option>
                 </select>
                 
                 <button type="submit" class="button-form">Registrar Venda</button>

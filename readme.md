@@ -1,176 +1,220 @@
-# 🌿 Flora Acessórios — Sistema de Gestão de Vendas
+# Flora Acessórios - Sistema de Gestão de Vendas
 
-> Projeto Integrador — UNIVESP | PJI310 - A2026S1N2 - Grupo 9
+Projeto Integrador - UNIVESP | PJI310 - A2026S1N2 - Grupo 9
 
-Sistema web de gestão comercial voltado ao controle de vendas, produtos e vendedores de uma loja de acessórios.
+Sistema web para registro e acompanhamento de vendas, com dashboard de faturamento, consulta de vendedores e catálogo de produtos.
 
----
+## Sobre
 
-## 📋 Sobre o Projeto
+A aplicação foi organizada em três camadas:
 
-A **Flora Acessórios** é uma loja de joias e acessórios que necessitava de um sistema interno para registrar e acompanhar suas vendas. Este projeto oferece um painel administrativo com dashboard de faturamento, cadastro de vendas e consulta de dados de produtos e vendedores.
+1. Front-end (HTML, CSS e JavaScript com ES Modules)
+2. Back-end (PHP)
+3. Banco de dados (MySQL)
 
-| Campo | Informação |
-|-------|-----------|
-| Curso | PJI310 — Projeto Integrador em Computação III |
-| Turma | A2026S1N2 |
-| Grupo | 9 |
-| Instituição | UNIVESP |
+Fluxo principal:
 
----
+1. Usuário registra uma venda no formulário
+2. API valida vendedor e dados
+3. Sistema grava cabeçalho da venda e item vendido
+4. Dashboard atualiza faturamento mensal e listas de vendas
 
-## 🚀 Funcionalidades
+## Funcionalidades Atuais
 
-- 📊 **Dashboard** — Gráfico de faturamento mensal (Chart.js) com formatação de cores e tooltip em R$
-- 🔍 **Detalhamento por mês** — Clique em uma barra do gráfico para ver as vendas daquele mês em cards
-- 🕓 **Vendas recentes** — Sidebar com as últimas 4 vendas registradas, com avatar de iniciais e tempo relativo
-- 🔄 **Botão de atualizar** — Recarrega gráfico e vendas recentes com animação de rotação
-- 🛒 **Cadastro de Vendas** — Registro de vendas vinculando vendedor, produto e mês
-- 👥 **Vendedores** — Tabela com todos os funcionários cadastrados
-- 📦 **Produtos** — Catálogo completo com categorias, códigos e valores
+1. Dashboard com gráfico mensal de faturamento (Chart.js)
+2. Filtro de ano no dashboard
+3. Clique na barra do gráfico para ver detalhamento do mês/ano selecionado
+4. Detalhamento com mês por extenso (ex.: Maio/2026)
+5. Vendas recentes (últimas 4)
+6. Botão de atualizar com animação
+7. Cadastro de venda com vendedor, SKU do produto, mês e ano
+8. Mês e ano atuais pré-selecionados no formulário
+9. Alerta personalizado (toast) de sucesso/erro ao registrar venda
+10. Tabela de vendedores
+11. Tabela de produtos com ordem: Código, Categoria, Nome, Valor
+12. Acessibilidade básica no menu principal e no canvas do dashboard
 
----
+## Estrutura do Projeto
 
-## 🗂️ Estrutura do Projeto
-
-```
-flora/
+```text
+flora-acessorios/
 ├── front-end/
-│   ├── index.html                # Dashboard
-│   ├── cadastro_de_vendas.html   # Formulário de venda
-│   ├── vendedores.html           # Tabela de vendedores
-│   ├── produtos.html             # Tabela de produtos
+│   ├── index.html
+│   ├── cadastro_de_vendas.html
+│   ├── vendedores.html
+│   ├── produtos.html
 │   ├── scripts/
-│   │   ├── conexaoAPI.js         # URL base da API
-│   │   ├── dashboard.js          # Gráfico, detalhamento por mês e vendas recentes
-│   │   ├── form.js               # Formulário de cadastro de venda
-│   │   └── tables.js             # Tabelas de vendedores e produtos
+│   │   ├── conexaoAPI.js
+│   │   ├── dashboard.js
+│   │   ├── form.js
+│   │   └── tables.js
 │   ├── styles/
-│   │   ├── style.css             # Estilos globais
-│   │   ├── form.css              # Estilos do formulário
-│   │   ├── tabela.css            # Estilos das tabelas
-│   │   ├── grafico.css           # Estilos do gráfico e cards de detalhe
-│   │   └── vendas_recentes.css   # Estilos da sidebar de vendas recentes
+│   │   ├── style.css
+│   │   ├── form.css
+│   │   ├── tabela.css
+│   │   ├── grafico.css
+│   │   └── vendas_recentes.css
 │   └── assets/
 │       ├── imgs/
 │       ├── icons/
 │       └── fonts/
 ├── back-end/
 │   └── php/
-│       ├── conexao.php           # Conexão com o banco MySQL
-│       ├── functions.php         # Funções de consulta e inserção
-│       ├── carrega_dados.php     # Endpoint de leitura (GET)
-│       └── salvar_venda.php      # Endpoint de escrita (POST)
-└── database/
-    └── flora_pi3.sql             # Script de criação do banco
+│       ├── conexao.php
+│       ├── functions.php
+│       ├── carrega_dados.php
+│       └── salvar_venda.php
+├── database/
+│   └── flora_pi3.sql
+└── readme.md
 ```
 
----
+## Banco de Dados
 
-## 🗄️ Banco de Dados
+Banco: flora_pi3
 
-Banco: `flora_pi3` — MySQL via phpMyAdmin
+### Tabelas
 
-| Tabela | Descrição |
-|--------|-----------|
-| `funcionario` | Dados dos vendedores |
-| `produto` | Catálogo de produtos |
-| `cliente` | Clientes (usado ID genérico `1` atualmente) |
-| `forma_pag` | Formas de pagamento disponíveis |
-| `venda_cab` | Cabeçalho da venda (vendedor, cliente, data, valor total) |
-| `venda_item` | Itens de cada venda (produto, quantidade, valor unitário) |
+1. funcionario
+2. produto
+3. venda_cab
+4. venda_item
 
----
+### Modelo Atual
 
-## 🔌 Endpoints da API
+1. Não existe tabela de cliente
+2. Não existe tabela de forma de pagamento
+3. Produto usa SKU textual como chave primária (id_prod), ex.: ANE-001
+4. venda_item.id_prod referencia produto.id_prod (varchar)
 
-Arquivo: `back-end/php/carrega_dados.php`
+## API
 
-| Parâmetro (`origem=`) | Método | Descrição |
-|-----------------------|--------|-----------|
-| `dashboard` | GET | Faturamento total agrupado por mês |
-| `vendedores` | GET | Lista de funcionários |
-| `produtos` | GET | Catálogo completo de produtos |
-| `produtos-form` | GET | Produtos ordenados por ID (para o select do formulário) |
-| `vendas_recentes` | GET | Últimas 4 vendas com JOIN em funcionário e produto |
-| `vendas_por_mes` + `&mes=N` | GET | Vendas de um mês específico (N = 1–12) |
+Base URL (ambiente local atual):
 
-Arquivo: `back-end/php/salvar_venda.php`
+```text
+http://localhost/flora-acessorios/back-end/php
+```
 
-| Método | Body (JSON) | Descrição |
-|--------|-------------|-----------|
-| POST | `{ vendedor, codigo_produto, valor_venda, mes_venda }` | Insere venda e item de venda |
+### Endpoint de leitura
 
----
+Arquivo: back-end/php/carrega_dados.php
 
-## ⚙️ Funções PHP (`functions.php`)
+1. GET ?origem=dashboard&ano=YYYY
+2. GET ?origem=anos_dashboard
+3. GET ?origem=vendedores
+4. GET ?origem=produtos
+5. GET ?origem=produtos-form
+6. GET ?origem=vendas_recentes
+7. GET ?origem=vendas_por_mes&mes=N&ano=YYYY
 
-| Função | Descrição |
-|--------|-----------|
-| `listaVendedores()` | SELECT em `funcionario` ordenado por nome |
-| `listaProdutos()` | SELECT em `produto` ordenado por categoria |
-| `listaProdutosForm()` | SELECT em `produto` ordenado por ID |
-| `listaVendas()` | Faturamento agrupado por mês |
-| `listaVendasRecentes()` | Últimas 4 vendas com JOIN (limite 4) |
-| `listaVendasPorMes($mes)` | Vendas de um mês com JOIN |
-| `getVendedorByName($nome)` | Retorna `id_func` pelo nome completo |
-| `geraVenda($id_func, $id_cliente, $data_venda, $valor)` | INSERT em `venda_cab` |
-| `insereItemVenda($id_venda, $id_prod, $valor)` | INSERT em `venda_item` |
+Observações:
 
----
+1. Mês em vendas_por_mes vai de 1 a 12
+2. Filtro de ano no dashboard depende de dados existentes em venda_cab
 
-## 🛠️ Tecnologias
+### Endpoint de escrita
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Front-end | HTML5, CSS3, JavaScript (ES Modules) |
-| Gráficos | Chart.js |
-| Back-end | PHP 8.2 |
-| Banco de dados | MySQL |
-| Servidor | Apache (XAMPP/LAMPP) |
+Arquivo: back-end/php/salvar_venda.php
 
----
+Método: POST (JSON)
 
-## ⚙️ Como Executar
+```json
+{
+  "vendedor": "Mariana Silva",
+  "codigo_produto": "ANE-001",
+  "valor_venda": 168.00,
+  "mes_venda": "05",
+  "ano_venda": "2026"
+}
+```
 
-### Pré-requisitos
-- [XAMPP](https://www.apachefriends.org/) instalado e rodando (Apache + MySQL)
+## Funções PHP Principais
 
-### Passo a passo
+Arquivo: back-end/php/functions.php
 
-1. **Copie o projeto para o htdocs**
-   ```bash
-   sudo cp -r /caminho/para/flora /opt/lampp/htdocs/
-   ```
+1. listaVendedores()
+2. listaProdutos()
+3. listaProdutosForm()
+4. listaAnosVendas()
+5. listaVendas($ano = null)
+6. listaVendasRecentes()
+7. listaVendasPorMes($mes, $ano = null)
+8. getVendedorByName($vendedor)
+9. geraVenda($id_func, $data_venda, $valor)
+10. insereItemVenda($id_venda, $id_prod, $valor)
 
-2. **Inicie o XAMPP**
-   ```bash
-   sudo /opt/lampp/lampp start
-   ```
+## Front-end (Resumo)
 
-3. **Importe o banco de dados**
-   - Acesse `http://localhost/phpmyadmin`
-   - Crie o banco `flora_pi3`
-   - Importe o arquivo `database/flora_pi3.sql`
+### Dashboard
 
-4. **Insira o cliente genérico** (necessário para o FK de `venda_cab`)
-   ```sql
-   INSERT INTO cliente (nome, sobrenome, cpf) VALUES ('Cliente', 'Padrão', '00000000000');
-   ```
+Arquivo: front-end/scripts/dashboard.js
 
-5. **Acesse o sistema**
-   ```
-   http://localhost/flora/front-end/index.html
-   ```
+1. Carrega anos disponíveis via API
+2. Seleciona ano atual automaticamente
+3. Carrega gráfico por ano
+4. Detalha vendas por mês + ano ao clicar na barra
+5. Mostra cursor pointer somente sobre barras clicáveis
 
----
+### Cadastro de vendas
 
-## 📄 Categorias de Produtos
+Arquivo: front-end/scripts/form.js
 
-| Categoria | Exemplos |
-|-----------|----------|
-| Anel | Quadrado Abaulado, Com Pedra, Trevo |
-| Brincos | Franja, Vírgula, Pérola |
-| Bracelete | Elos Cravejados, Personalizado |
-| Colar | Choker Esteira, Choker Malha |
-| Pulseira | Esteira |
+1. Popula meses dinamicamente
+2. Popula anos dinamicamente (de 2025 até o ano atual)
+3. Pré-seleciona mês e ano atuais
+4. Envia SKU como codigo_produto
+5. Exibe toast customizado sem redirecionamento
+
+## Acessibilidade Básica
+
+Aplicada no menu principal das páginas:
+
+1. index.html
+2. cadastro_de_vendas.html
+3. produtos.html
+4. vendedores.html
+
+Pontos aplicados:
+
+1. aria-label no nav principal
+2. aria-label nos links de navegação
+3. role e aria-label no canvas do dashboard
+
+## Tecnologias
+
+1. HTML5
+2. CSS3
+3. JavaScript (ES Modules)
+4. Chart.js
+5. PHP
+6. MySQL
+7. Apache (XAMPP)
+
+## Como Executar (Windows + XAMPP)
+
+1. Coloque a pasta flora-acessorios dentro de c:/xampp/htdocs
+2. Inicie Apache e MySQL no painel do XAMPP
+3. Abra http://localhost/phpmyadmin
+4. Exclua o banco flora_pi3 (se existir) e crie novamente
+5. Importe database/flora_pi3.sql
+6. Acesse o sistema em:
+
+```text
+http://localhost/flora-acessorios/front-end/index.html
+```
+
+## Dados Iniciais de Produto (SKU)
+
+Exemplos já incluídos no SQL:
+
+1. ANE-001
+2. BRI-001
+3. BRA-001
+4. BRA-002
+5. ANE-002
+6. BRI-002
+7. COL-001
+8. PUL-001
+9. COL-002
+10. ANE-003
+11. BRI-003

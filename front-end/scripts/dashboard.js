@@ -1,8 +1,10 @@
 import { API_URL } from './conexaoAPI.js';
 
 let graficoVendas = null;
+let anoSelecionado = new Date().getFullYear();
 
 const MESES = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+const MESES_COMPLETOS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 // =============================
 // HELPER: calcular tempo relativo
@@ -22,9 +24,9 @@ function calcularTempo(dataVenda) {
 // =============================
 // BUSCAR DADOS DO BACKEND
 // =============================
-async function carregarDadosDashboard() {
+async function carregarDadosDashboard(ano) {
     try {
-        const res = await fetch(`${API_URL}/carrega_dados.php?origem=dashboard&nocache=` + new Date().getTime());
+        const res = await fetch(`${API_URL}/carrega_dados.php?origem=dashboard&ano=${ano}&nocache=` + new Date().getTime());
         const dadosAPI = await res.json();
 
         console.log("DADOS DO DASH:", dadosAPI);
@@ -43,6 +45,17 @@ async function carregarDadosDashboard() {
     }
 }
 
+async function carregarAnosDashboard() {
+    try {
+        const res = await fetch(`${API_URL}/carrega_dados.php?origem=anos_dashboard&nocache=` + new Date().getTime());
+        const anosAPI = await res.json();
+        return anosAPI.map(item => parseInt(item.ANO, 10)).filter(Boolean);
+    } catch (erro) {
+        console.error('Erro ao carregar anos do dashboard:', erro);
+        return [];
+    }
+}
+
 async function carregarVendasRecentes() {
     try {
         const res = await fetch(`${API_URL}/carrega_dados.php?origem=vendas_recentes&nocache=` + new Date().getTime());
@@ -53,10 +66,10 @@ async function carregarVendasRecentes() {
     }
 }
 
-async function carregarVendasPorMes(mesSelecionado) {
+async function carregarVendasPorMes(mesSelecionado, ano) {
     try {
         const mes = MESES.indexOf(mesSelecionado) + 1; // Converter 'JAN' -> 1, 'FEV' -> 2, etc.
-        const res = await fetch(`${API_URL}/carrega_dados.php?origem=vendas_por_mes&mes=${mes}&nocache=` + new Date().getTime());
+        const res = await fetch(`${API_URL}/carrega_dados.php?origem=vendas_por_mes&mes=${mes}&ano=${ano}&nocache=` + new Date().getTime());
         return await res.json();
     } catch (erro) {
         console.error('Erro ao carregar vendas do mês:', erro);
@@ -75,7 +88,7 @@ async function inicializarGrafico() {
     }
 
     const ctx = canvas.getContext('2d');
-    const dados = await carregarDadosDashboard();
+    const dados = await carregarDadosDashboard(anoSelecionado);
 
     const corBarraNormal = '#CEC5B9'; 
     const corLinhasGrade = 'rgba(125, 118, 108, 0.2)'; 
@@ -99,6 +112,12 @@ async function inicializarGrafico() {
         },
         options: {
             onClick: exibirDetalhesMes,
+            onHover: (event, elements) => {
+                const canvas = event?.native?.target;
+                if (canvas) {
+                    canvas.style.cursor = elements.length ? 'pointer' : 'default';
+                }
+            },
             responsive: true,
             maintainAspectRatio: false,
             plugins: { 
@@ -148,6 +167,7 @@ async function exibirDetalhesMes(event, elements, chart) {
     
     const index = elements[0].index;
     const mesClicado = chart.data.labels[index]; 
+    const mesCompleto = MESES_COMPLETOS[index] || mesClicado;
 
     const corBarraNormal = '#CEC5B9'; 
     const corBarraDestaque = '#665A44'; 
@@ -160,9 +180,9 @@ async function exibirDetalhesMes(event, elements, chart) {
     const titulo = document.getElementById('titulo-detalhes-mes');
     const cardsGrid = document.getElementById('cards-vendas');
 
-    const vendasDoMes = await carregarVendasPorMes(mesClicado);
+    const vendasDoMes = await carregarVendasPorMes(mesClicado, anoSelecionado);
 
-    titulo.textContent = `Detalhamento de vendas de ${mesClicado}`;
+    titulo.textContent = `Detalhamento de vendas de ${mesCompleto}/${anoSelecionado}`;
     cardsGrid.innerHTML = ''; 
 
     if (vendasDoMes.length === 0) {
@@ -235,19 +255,53 @@ async function inicializarVendasRecentes() {
 // INICIAR
 // =============================
 document.addEventListener('DOMContentLoaded', () => {
-    inicializarGrafico();
-    inicializarVendasRecentes();
+    const selectAnoDashboard = document.getElementById('anoDashboard');
+
+    const iniciarDashboard = async () => {
+        const anosDisponiveis = await carregarAnosDashboard();
+        const anoAtual = new Date().getFullYear();
+
+        if (selectAnoDashboard) {
+            const anosParaExibir = anosDisponiveis.length > 0 ? anosDisponiveis : [anoAtual];
+            selectAnoDashboard.innerHTML = '';
+
+            anosParaExibir.forEach(ano => {
+                const option = document.createElement('option');
+                option.value = String(ano);
+                option.textContent = String(ano);
+                selectAnoDashboard.appendChild(option);
+            });
+
+            const anoInicial = anosParaExibir.includes(anoAtual) ? anoAtual : anosParaExibir[0];
+            anoSelecionado = anoInicial;
+            selectAnoDashboard.value = String(anoSelecionado);
+
+            selectAnoDashboard.addEventListener('change', async () => {
+                anoSelecionado = parseInt(selectAnoDashboard.value, 10);
+                const containerDetalhes = document.getElementById('detalhes-mes');
+                if (containerDetalhes) {
+                    containerDetalhes.style.display = 'none';
+                }
+                await inicializarGrafico();
+            });
+        }
+
+        await inicializarGrafico();
+        await inicializarVendasRecentes();
+    };
+
+    iniciarDashboard();
 
     const btnAtualizar = document.getElementById('btn-atualizar');
     if (btnAtualizar) {
-        btnAtualizar.addEventListener('click', () => {
+        btnAtualizar.addEventListener('click', async () => {
             btnAtualizar.classList.add('girando');
             btnAtualizar.addEventListener('animationend', () => {
                 btnAtualizar.classList.remove('girando');
             }, { once: true });
 
-            inicializarGrafico();
-            inicializarVendasRecentes();
+            await inicializarGrafico();
+            await inicializarVendasRecentes();
         });
     }
 });

@@ -31,3 +31,36 @@
 .button-form:hover {
     background-color: var(--cor-borda);
 }
+
+.custom-alert {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    min-width: 280px;
+    max-width: 360px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 6px solid var(--cor-primaria);
+    background-color: var(--cor-form);
+    color: var(--cor-texto);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    font-family: var(--font-texto);
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.custom-alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.custom-alert.success {
+    border-left-color: #6b8f71;
+}
+
+.custom-alert.error {
+    border-left-color: #9c4a4a;
+}

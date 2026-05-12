@@ -8,6 +8,24 @@
     position: relative;
 }
 
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.dashboard-year-select {
+    min-width: 150px;
+    padding: 8px 10px;
+    border: 1px solid var(--cor-primaria);
+    border-radius: 6px;
+    background-color: var(--cor-form);
+    color: var(--cor-texto);
+    font-family: var(--font-texto);
+}
+
 canvas#vendasChart {
     width: 100% !important;
     height: 100% !important;

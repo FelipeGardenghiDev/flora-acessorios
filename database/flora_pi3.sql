@@ -14,39 +14,6 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Estrutura para tabela `cliente`
---
-
-CREATE TABLE `cliente` (
-  `id_cliente` int(11) NOT NULL,
-  `nome` varchar(50) NOT NULL,
-  `sobrenome` varchar(100) NOT NULL,
-  `cpf` varchar(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `forma_pag`
---
-
-CREATE TABLE `forma_pag` (
-  `id_pag` int(11) NOT NULL,
-  `descricao` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Despejando dados para a tabela `forma_pag`
---
-
-INSERT INTO `forma_pag` (`id_pag`, `descricao`) VALUES
-(1, 'Dinheiro'),
-(2, 'PIX'),
-(3, 'Cartão de Crédito'),
-(4, 'Cartão de Débito'),
-(5, 'Boleto');
-
 -- --------------------------------------------------------
 
 --
@@ -78,7 +45,7 @@ INSERT INTO `funcionario` (`id_func`, `nome`, `sobrenome`, `cpf`, `admissao`, `d
 --
 
 CREATE TABLE `produto` (
-  `id_prod` int(11) NOT NULL,
+  `id_prod` varchar(20) NOT NULL,
   `categoria` varchar(50) NOT NULL,
   `descricao` varchar(100) NOT NULL,
   `valor` decimal(10,2) NOT NULL
@@ -89,17 +56,17 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`id_prod`, `categoria`, `descricao`, `valor`) VALUES
-(1, 'Anel', 'Quadrado Abaulado', 168.00),
-(2, 'Brincos', 'Franja', 174.00),
-(3, 'Bracelete', 'Elos Cravejados', 324.00),
-(4, 'Bracelete', 'Personalizado', 334.00),
-(5, 'Anel', 'Com Pedra', 170.00),
-(6, 'Brincos', 'Vírgula', 96.00),
-(7, 'Colar', 'Choker Esteira', 228.00),
-(8, 'Pulseira', 'Esteira', 128.00),
-(9, 'Colar', 'Choker Malha', 144.00),
-(10, 'Anel', 'Trevo', 96.00),
-(11, 'Brincos', 'Pérola', 228.00);
+('ANE-001', 'Anel', 'Quadrado Abaulado', 168.00),
+('BRI-001', 'Brincos', 'Franja', 174.00),
+('BRA-001', 'Bracelete', 'Elos Cravejados', 324.00),
+('BRA-002', 'Bracelete', 'Personalizado', 334.00),
+('ANE-002', 'Anel', 'Com Pedra', 170.00),
+('BRI-002', 'Brincos', 'Vírgula', 96.00),
+('COL-001', 'Colar', 'Choker Esteira', 228.00),
+('PUL-001', 'Pulseira', 'Esteira', 128.00),
+('COL-002', 'Colar', 'Choker Malha', 144.00),
+('ANE-003', 'Anel', 'Trevo', 96.00),
+('BRI-003', 'Brincos', 'Pérola', 228.00);
 
 -- --------------------------------------------------------
 
@@ -110,8 +77,6 @@ INSERT INTO `produto` (`id_prod`, `categoria`, `descricao`, `valor`) VALUES
 CREATE TABLE `venda_cab` (
   `id_venda` int(11) NOT NULL,
   `id_func` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
-  `id_pag` int(11) NOT NULL,
   `data_venda` datetime NOT NULL,
   `valor_total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -125,7 +90,7 @@ CREATE TABLE `venda_cab` (
 CREATE TABLE `venda_item` (
   `id_item` int(11) NOT NULL,
   `id_venda` int(11) NOT NULL,
-  `id_prod` int(11) NOT NULL,
+  `id_prod` varchar(20) NOT NULL,
   `quantidade` int(11) NOT NULL,
   `valor_unit` decimal(10,2) NOT NULL,
   `desconto_perc` decimal(5,2) DEFAULT 0.00
@@ -134,19 +99,6 @@ CREATE TABLE `venda_item` (
 --
 -- Índices para tabelas despejadas
 --
-
---
--- Índices de tabela `cliente`
---
-ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`id_cliente`),
-  ADD UNIQUE KEY `UNIQUE` (`cpf`);
-
---
--- Índices de tabela `forma_pag`
---
-ALTER TABLE `forma_pag`
-  ADD PRIMARY KEY (`id_pag`);
 
 --
 -- Índices de tabela `funcionario`
@@ -166,9 +118,7 @@ ALTER TABLE `produto`
 --
 ALTER TABLE `venda_cab`
   ADD PRIMARY KEY (`id_venda`),
-  ADD KEY `fk_funcionario` (`id_func`) USING BTREE,
-  ADD KEY `fk_forma_pag` (`id_pag`) USING BTREE,
-  ADD KEY `fk_cliente` (`id_cliente`) USING BTREE;
+  ADD KEY `fk_funcionario` (`id_func`) USING BTREE;
 
 --
 -- Índices de tabela `venda_item`
@@ -183,28 +133,10 @@ ALTER TABLE `venda_item`
 --
 
 --
--- AUTO_INCREMENT de tabela `cliente`
---
-ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `forma_pag`
---
-ALTER TABLE `forma_pag`
-  MODIFY `id_pag` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
   MODIFY `id_func` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de tabela `produto`
---
-ALTER TABLE `produto`
-  MODIFY `id_prod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `venda_cab`
@@ -226,9 +158,7 @@ ALTER TABLE `venda_item`
 -- Restrições para tabelas `venda_cab`
 --
 ALTER TABLE `venda_cab`
-  ADD CONSTRAINT `FK` FOREIGN KEY (`id_func`) REFERENCES `funcionario` (`id_func`),
-  ADD CONSTRAINT `fk_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
-  ADD CONSTRAINT `fk_pag` FOREIGN KEY (`id_pag`) REFERENCES `forma_pag` (`id_pag`);
+  ADD CONSTRAINT `FK` FOREIGN KEY (`id_func`) REFERENCES `funcionario` (`id_func`);
 
 --
 -- Restrições para tabelas `venda_item`

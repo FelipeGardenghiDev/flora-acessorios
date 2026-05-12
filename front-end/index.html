@@ -35,7 +35,12 @@
             
             <div class="dashboard-layout">
                 <section class="grafico-container">
-                    <h3 class="titulo_pagina">Dashboard de Vendas</h3>
+                    <div class="dashboard-header">
+                        <h3 class="titulo_pagina">Dashboard de Vendas</h3>
+                        <select id="anoDashboard" class="dashboard-year-select" aria-label="Selecionar ano do gráfico">
+                            <option value="" disabled selected>Selecione o ano</option>
+                        </select>
+                    </div>
                     <div class="grafico-box">
                         <canvas id="vendasChart" role="img" aria-label="Gráfico de vendas mensais. Os detalhes podem ser vistos na seção de detalhamento abaixo."></canvas>
                     </div>

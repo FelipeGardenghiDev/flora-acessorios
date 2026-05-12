@@ -25,19 +25,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             produtos.forEach(p => {
                 const row = tabelaProdutos.insertRow();
-                // ccentralizar todos oos campos da tabela de produtos
+                // centralizar todos os campos da tabela de produtos
                 const cell = row.insertCell(0);
-                cell.textContent = p.CATEGORIA;
-                cell.style.textAlign = "center";
+                cell.textContent = p.ID;
+                cell.style.textAlign = "left";
                 const cell2 = row.insertCell(1);
-                cell2.textContent = p.ID;
-                cell2.style.textAlign = "center";
+                cell2.textContent = p.CATEGORIA;
+                cell2.style.textAlign = "left";
                 const cell3 = row.insertCell(2);
                 cell3.textContent = p.DESCRICAO;
-                cell3.style.textAlign = "center";
+                cell3.style.textAlign = "left";
                 const cell4 = row.insertCell(3);
                 cell4.textContent = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.VALOR); // valor formatado para moeda brasileira
-                cell4.style.textAlign = "center";
+                cell4.style.textAlign = "left";
             });
         } else {
             console.warn("Nenhuma tabela encontrada para carregar!");

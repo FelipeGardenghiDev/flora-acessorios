@@ -21,7 +21,7 @@ function listaProdutos() {
                    P.descricao AS DESCRICAO, 
                    P.valor AS VALOR 
               FROM produto P
-              ORDER BY P.CATEGORIA ASC, P.DESCRICAO ASC";
+                ORDER BY P.categoria ASC, P.id_prod ASC, P.descricao ASC";
     $result = $conn->query($sql);
     return $result->fetch_all(MYSQLI_ASSOC);
 }
@@ -38,8 +38,32 @@ function listaProdutosForm() {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function listaVendas() {
+function listaAnosVendas() {
     global $conn;
+    $sql = "SELECT DISTINCT YEAR(VC.data_venda) AS ANO
+              FROM venda_cab VC
+          ORDER BY ANO DESC";
+    $result = $conn->query($sql);
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function listaVendas($ano = null) {
+    global $conn;
+
+    if ($ano) {
+        $sql = "SELECT MONTH(VC.data_venda) AS MES,
+                       SUM(valor_total) AS TOTAL
+                  FROM venda_cab VC
+                 WHERE YEAR(VC.data_venda) = ?
+              GROUP BY MONTH(VC.data_venda)
+              ORDER BY MONTH(VC.data_venda) ASC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $ano);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     $sql = "SELECT MONTH(VC.data_venda) AS MES,
                    SUM(valor_total) AS TOTAL
               FROM venda_cab VC
@@ -60,14 +84,12 @@ function getVendedorByName($vendedor) {
     return $vendedorID;
 }
 
-// Precisa arrumar para $id_cliente poder ser nulo ou ter um valor padrão, 
-// já que não estamos usando cliente no formulário
-function geraVenda($id_func, $id_cliente = null, $data_venda, $valor) {
+function geraVenda($id_func, $data_venda, $valor) {
     global $conn;
-    $sql = "INSERT INTO venda_cab (id_func, id_cliente, id_pag, data_venda, valor_total)
-            VALUES (?, ?, 1, ?, ?)";
+    $sql = "INSERT INTO venda_cab (id_func, data_venda, valor_total)
+            VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iisd", $id_func, $id_cliente, $data_venda, $valor);
+    $stmt->bind_param("isd", $id_func, $data_venda, $valor);
     $stmt->execute();
     return $stmt->insert_id;
 }
@@ -77,7 +99,7 @@ function insereItemVenda($id_venda, $id_prod, $valor) {
     $sql = "INSERT INTO venda_item (id_venda, id_prod, quantidade, valor_unit)
             VALUES (?, ?, 1, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iid", $id_venda, $id_prod, $valor);
+    $stmt->bind_param("isd", $id_venda, $id_prod, $valor);
     return $stmt->execute();
 }
 
@@ -93,13 +115,13 @@ function listaVendasRecentes() {
               JOIN funcionario F ON VC.id_func = F.id_func
               JOIN venda_item VI ON VC.id_venda = VI.id_venda
               JOIN produto P ON VI.id_prod = P.id_prod
-          ORDER BY VC.data_venda DESC
-             LIMIT 4";
+             ORDER BY VC.data_venda DESC
+                 LIMIT 4";
     $result = $conn->query($sql);
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function listaVendasPorMes($mes) {
+function listaVendasPorMes($mes, $ano = null) {
     global $conn;
     $sql = "SELECT VC.id_venda AS ID,
                    CONCAT(F.nome, ' ', F.sobrenome) AS VENDEDOR,
@@ -111,10 +133,21 @@ function listaVendasPorMes($mes) {
               JOIN funcionario F ON VC.id_func = F.id_func
               JOIN venda_item VI ON VC.id_venda = VI.id_venda
               JOIN produto P ON VI.id_prod = P.id_prod
-             WHERE MONTH(VC.data_venda) = ?
-          ORDER BY VC.data_venda DESC";
+             WHERE MONTH(VC.data_venda) = ?";
+
+    if ($ano) {
+        $sql .= " AND YEAR(VC.data_venda) = ?";
+    }
+
+    $sql .= " ORDER BY VC.data_venda DESC";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $mes);
+
+    if ($ano) {
+        $stmt->bind_param("ii", $mes, $ano);
+    } else {
+        $stmt->bind_param("i", $mes);
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
